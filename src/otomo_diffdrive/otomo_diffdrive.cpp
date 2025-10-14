@@ -206,7 +206,7 @@ void OtomoDiffdrive::async_serial_callback(const std::vector<uint8_t>& buf, size
         std::stringstream ss;
         ss << std::fixed << std::setprecision(5);
         ss << a_x << ", " << a_y << ", " << a_z;
-        // RCLCPP_INFO(get_logger(), "IMU: %s", ss.str().c_str());
+        RCLCPP_INFO(get_logger(), "IMU: %s", ss.str().c_str());
       } else if (proto_msg.has_drive_response()) {
         RCLCPP_INFO_STREAM(get_logger(), "Got robot response");
       }
