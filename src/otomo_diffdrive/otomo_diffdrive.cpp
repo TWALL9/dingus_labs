@@ -241,13 +241,13 @@ void OtomoDiffdrive::async_serial_callback(const std::vector<uint8_t>& buf, size
         ss << a_x << ", " << a_y << ", " << a_z;
         // RCLCPP_INFO(get_logger(), "IMU: %s", ss.str().c_str());
 
-        imu_.angular_velocity_x = g_z;
-        imu_.angular_velocity_y = g_x;
-        imu_.angular_velocity_z = g_y;
+        imu_.angular_velocity_x = g_x;
+        imu_.angular_velocity_y = g_y;
+        imu_.angular_velocity_z = g_z;
 
-        imu_.linear_accel_x = a_z;
-        imu_.linear_accel_y = a_x;
-        imu_.linear_accel_z = a_y;
+        imu_.linear_accel_x = a_x;
+        imu_.linear_accel_y = a_y;
+        imu_.linear_accel_z = a_z;
       } else if (proto_msg.has_drive_response()) {
         RCLCPP_INFO_STREAM(get_logger(), "Got robot response");
       }
