@@ -82,7 +82,7 @@ std::vector<hardware_interface::StateInterface> OtomoDiffdrive::export_state_int
     "angular_velocity.y", &imu_.angular_velocity_y));
   state_interfaces.emplace_back(hardware_interface::StateInterface(imu_.name,
     "angular_velocity.z", &imu_.angular_velocity_z));
-  
+
   state_interfaces.emplace_back(hardware_interface::StateInterface(imu_.name,
     "linear_acceleration.x", &imu_.linear_accel_x));
   state_interfaces.emplace_back(hardware_interface::StateInterface(imu_.name,
@@ -152,6 +152,7 @@ OtomoDiffdrive::hwi_return OtomoDiffdrive::write(const rclcpp::Time&, const rclc
   // RCLCPP_INFO_STREAM(get_logger(), "cmd: " << l_wheel_.cmd_ << ", " << r_wheel_.cmd_);
 
   // Create and send command to robot
+  // Heads up, protobuf api handles deleting the `new` objects
   otomo::TopMsg msg;
   otomo::DiffDrive * diff_drive = new otomo::DiffDrive();
   diff_drive->set_left_motor(l_cmd);
@@ -220,6 +221,7 @@ void OtomoDiffdrive::async_serial_callback(const std::vector<uint8_t>& buf, size
 
         const auto now = std::chrono::system_clock::now();
         double stamp = static_cast<double>(now.time_since_epoch().count()) / 1000000000;
+
         std::stringstream ss;
         ss << std::fixed << std::setprecision(5);
         ss << stamp << ", " << l_wheel_.cmd_ << ", " << l_wheel_.vel_ << ", ";
@@ -233,15 +235,16 @@ void OtomoDiffdrive::async_serial_callback(const std::vector<uint8_t>& buf, size
         const auto a_x = imu.accel().x();
         const auto a_y = imu.accel().y();
         const auto a_z = imu.accel().z();
+
         std::stringstream ss;
         ss << std::fixed << std::setprecision(5);
         ss << a_x << ", " << a_y << ", " << a_z;
-        RCLCPP_INFO(get_logger(), "IMU: %s", ss.str().c_str());
+        // RCLCPP_INFO(get_logger(), "IMU: %s", ss.str().c_str());
 
         imu_.angular_velocity_x = g_z;
         imu_.angular_velocity_y = g_x;
         imu_.angular_velocity_z = g_y;
-        
+
         imu_.linear_accel_x = a_z;
         imu_.linear_accel_y = a_x;
         imu_.linear_accel_z = a_y;
