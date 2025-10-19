@@ -24,8 +24,8 @@ bool encode_message(async_serial::KissOutputStream& out_kiss, otomo::TopMsg& msg
   return true;
 }
 
-OtomoDiffdrive::cb_return OtomoDiffdrive::on_init(const hardware_interface::HardwareInfo& info) {
-  if (hardware_interface::SystemInterface::on_init(info) != OtomoDiffdrive::cb_return::SUCCESS) {
+OtomoDiffdrive::cb_return OtomoDiffdrive::on_init(const hardware_interface::HardwareComponentInterfaceParams& params) {
+  if (hardware_interface::SystemInterface::on_init(params) != OtomoDiffdrive::cb_return::SUCCESS) {
     return OtomoDiffdrive::cb_return::ERROR;
   }
 
@@ -48,6 +48,8 @@ OtomoDiffdrive::cb_return OtomoDiffdrive::on_init(const hardware_interface::Hard
   serial_port_ = std::make_shared<async_serial::SerialPort>(
     config_.serial_name_, config_.baud_rate_);
 
+  imu_.name = info_.hardware_parameters["imu_name"];
+
   return OtomoDiffdrive::cb_return::SUCCESS;
 }
 
@@ -62,6 +64,31 @@ std::vector<hardware_interface::StateInterface> OtomoDiffdrive::export_state_int
     hardware_interface::HW_IF_VELOCITY, &r_wheel_.vel_));
   state_interfaces.emplace_back(hardware_interface::StateInterface(r_wheel_.name(),
     hardware_interface::HW_IF_POSITION, &r_wheel_.pos_));
+
+  RCLCPP_INFO(get_logger(), "Interfaces: %s", imu_.name.c_str());
+
+  state_interfaces.emplace_back(hardware_interface::StateInterface(imu_.name,
+    "orientation.x", &imu_.orientation_x));
+  state_interfaces.emplace_back(hardware_interface::StateInterface(imu_.name,
+    "orientation.y", &imu_.orientation_y));
+  state_interfaces.emplace_back(hardware_interface::StateInterface(imu_.name,
+    "orientation.z", &imu_.orientation_z));
+  state_interfaces.emplace_back(hardware_interface::StateInterface(imu_.name,
+    "orientation.w", &imu_.orientation_w));
+
+    state_interfaces.emplace_back(hardware_interface::StateInterface(imu_.name,
+    "angular_velocity.x", &imu_.angular_velocity_x));
+  state_interfaces.emplace_back(hardware_interface::StateInterface(imu_.name,
+    "angular_velocity.y", &imu_.angular_velocity_y));
+  state_interfaces.emplace_back(hardware_interface::StateInterface(imu_.name,
+    "angular_velocity.z", &imu_.angular_velocity_z));
+  
+  state_interfaces.emplace_back(hardware_interface::StateInterface(imu_.name,
+    "linear_acceleration.x", &imu_.linear_accel_x));
+  state_interfaces.emplace_back(hardware_interface::StateInterface(imu_.name,
+    "linear_acceleration.y", &imu_.linear_accel_y));
+  state_interfaces.emplace_back(hardware_interface::StateInterface(imu_.name,
+    "linear_acceleration.z", &imu_.linear_accel_z));
 
   return state_interfaces;
 }
@@ -200,6 +227,9 @@ void OtomoDiffdrive::async_serial_callback(const std::vector<uint8_t>& buf, size
         // RCLCPP_INFO(get_logger(), "MOTOR: %s", ss.str().c_str());
       } else if (proto_msg.has_imu()) {
         const auto imu = proto_msg.imu();
+        const auto g_x = imu.gyro().x();
+        const auto g_y = imu.gyro().y();
+        const auto g_z = imu.gyro().z();
         const auto a_x = imu.accel().x();
         const auto a_y = imu.accel().y();
         const auto a_z = imu.accel().z();
@@ -207,6 +237,14 @@ void OtomoDiffdrive::async_serial_callback(const std::vector<uint8_t>& buf, size
         ss << std::fixed << std::setprecision(5);
         ss << a_x << ", " << a_y << ", " << a_z;
         RCLCPP_INFO(get_logger(), "IMU: %s", ss.str().c_str());
+
+        imu_.angular_velocity_x = g_z;
+        imu_.angular_velocity_y = g_x;
+        imu_.angular_velocity_z = g_y;
+        
+        imu_.linear_accel_x = a_z;
+        imu_.linear_accel_y = a_x;
+        imu_.linear_accel_z = a_y;
       } else if (proto_msg.has_drive_response()) {
         RCLCPP_INFO_STREAM(get_logger(), "Got robot response");
       }

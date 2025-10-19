@@ -17,6 +17,7 @@
 #include "otomo_plugins/config.hpp"
 #include "otomo_plugins/wheel.hpp"
 #include "otomo_plugins/pid_params.hpp"
+#include "otomo_plugins/imu.hpp"
 
 #include "otomo_msgs/msg/diffdrive.hpp"
 
@@ -31,7 +32,7 @@ public:
 
   OtomoDiffdrive() = default;
 
-  cb_return on_init(const hardware_interface::HardwareInfo& info) override;
+  cb_return on_init(const hardware_interface::HardwareComponentInterfaceParams& params) override;
   cb_return on_activate(const rclcpp_lifecycle::State& previous_state) override;
   cb_return on_deactivate(const rclcpp_lifecycle::State& previous_state) override;
 
@@ -51,6 +52,8 @@ private:
 
   PidParams pid_;
   PidParams old_pid_;
+
+  Imu imu_;
 
   std::chrono::time_point<std::chrono::system_clock> time_;
   async_serial::KissInputStream recv_buf_;
