@@ -1,12 +1,20 @@
 FROM ros:jazzy
 
 RUN apt-get update && apt-get install -y \
+    vim \
+    protobuf-compiler \
+    libboost-all-dev \
+    udev \
+    usbutils \
+    python3-pip \
     tmux \
+    v4l-utils \
+
+RUN apt-get install -y \
     ros-jazzy-xacro \
     ros-jazzy-image-transport-plugins \
     ros-jazzy-rplidar-ros \
     ros-jazzy-v4l2-camera \
-    v4l-utils \
     ros-jazzy-ros2-control \
     ros-jazzy-ros2-controllers \
     ros-jazzy-rosbridge-suite \
@@ -20,12 +28,6 @@ RUN apt-get update && apt-get install -y \
     ros-jazzy-realsense2-camera \
     ros-jazzy-librealsense2 \
     ros-jazzy-twist-mux \
-    vim \
-    protobuf-compiler \
-    libboost-all-dev \
-    udev \
-    usbutils \
-    python3-pip \
     python3-rosdep
 
 # RUN python3 -m pip install flask
