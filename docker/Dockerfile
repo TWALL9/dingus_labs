@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y \
     usbutils \
     python3-pip \
     tmux \
-    v4l-utils \
+    v4l-utils
 
 RUN apt-get install -y \
     ros-jazzy-xacro \
