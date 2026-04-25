@@ -32,12 +32,9 @@ RUN apt-get update && apt-get install -y \
 
 COPY 80-st-board.rules /etc/udev/rules.d/80-st-board.rules
 
-WORKDIR /otomo2_ws/src
-RUN git clone https://github.com/TWALL9/otomo_msgs.git --recurse-submodules
-RUN git clone https://github.com/TWALL9/otomo_control.git
-RUN git clone https://github.com/TWALL9/otomo_core.git
-RUN git clone https://github.com/TWALL9/otomo_plugins.git
+WORKDIR /dingus_ws/src
+RUN git clone https://github.com/TWALL9/dingus_labs.git --recurse-submodules
 RUN git clone https://github.com/TWALL9/async_serial.git
 RUN git clone https://github.com/ros-teleop/twist_mux.git
 
-WORKDIR /otomo2_ws
+WORKDIR /dingus_ws
