@@ -1,5 +1,10 @@
+# Development Docker image for Dingus ROS2 packages
+# Targets ARM64 (Raspberry Pi 4/5) and compatible hardware
+# Hardware-only (no Gazebo simulation)
+
 FROM ros:jazzy
 
+# Install system dependencies and development tools
 RUN apt-get update && apt-get install -y \
     vim \
     protobuf-compiler \
@@ -8,9 +13,11 @@ RUN apt-get update && apt-get install -y \
     usbutils \
     python3-pip \
     tmux \
-    v4l-utils
+    v4l-utils \
+    && rm -rf /var/lib/apt/lists/*
 
-RUN apt-get install -y \
+# Install ROS 2 packages (hardware, sensors, control, navigation)
+RUN apt-get update && apt-get install -y \
     ros-jazzy-xacro \
     ros-jazzy-image-transport-plugins \
     ros-jazzy-rplidar-ros \
@@ -28,15 +35,23 @@ RUN apt-get install -y \
     ros-jazzy-realsense2-camera \
     ros-jazzy-librealsense2 \
     ros-jazzy-twist-mux \
-    python3-rosdep
+    python3-rosdep \
+    && rm -rf /var/lib/apt/lists/*
 
-# RUN python3 -m pip install flask
-
+# Copy udev rules for hardware recognition
 COPY 80-st-board.rules /etc/udev/rules.d/80-st-board.rules
 
+# Clone source repositories
 WORKDIR /dingus_ws/src
 RUN git clone https://github.com/TWALL9/dingus_labs.git --recurse-submodules
 RUN git clone https://github.com/TWALL9/async_serial.git
 RUN git clone https://github.com/ros-teleop/twist_mux.git
 
+# Build ROS workspace
 WORKDIR /dingus_ws
+RUN . /opt/ros/jazzy/setup.sh && rosdep install --from-paths src --ignore-src -y
+RUN . /opt/ros/jazzy/setup.sh && colcon build --symlink-install
+
+# Source setup script on container start
+RUN echo "source /opt/ros/jazzy/setup.bash" >> /root/.bashrc && \
+    echo "source /dingus_ws/install/setup.bash" >> /root/.bashrc
