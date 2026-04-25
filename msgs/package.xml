@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>otomo_msgs</name>
+  <version>0.1.0</version>
+  <description>ROS versions of protobuf messages used for otomo</description>
+
+  <url type="website">http://github.com/TWALL9/otomo_msgs/</url>
+
+  <maintainer email="thomaswallis0@gmail.com">Tom Wallis</maintainer>
+  <author email="thomaswallis0@gmail.com">Tom Wallis</author>
+
+  <license>MIT</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <buildtool_depend>rosidl_default_generators</buildtool_depend>
+  <exec_depend>rosidl_default_runtime</exec_depend>
+  <depend>std_msgs</depend>
+
+  <member_of_group>rosidl_interface_packages</member_of_group>
+
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+
+  <build_export_depend>protobuf</build_export_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
