@@ -28,7 +28,7 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   DEPENDENCIES std_msgs
 )
 
-set(PROTO_DIR ${PROJECT_SOURCE_DIR}/otomo-protobuf)
+set(PROTO_DIR ${PROJECT_SOURCE_DIR}/protobuf)
 file(GLOB PROTO_FILES ${PROTO_DIR}/*.proto)
 message(STATUS "Proto dir: ${PROTO_DIR}")
 message(STATUS "Proto files: ${PROTO_FILES}")
