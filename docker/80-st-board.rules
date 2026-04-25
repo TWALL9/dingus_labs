@@ -1,4 +1,4 @@
 #SUBSYSTEM=="usb", ATTRS{idVendor}=="0483", ATTRS{idProduct}=="5740", MODE="0666"
 #SUBSYSTEM=="tty", SUBSYSTEMS=="usb", ATTRS{product}=="st-board", SYMLINK=="st-board", MODE="0666"
-KERNEL=="ttyACM[0-9]*", SUBSYSTEM=="tty", ATTRS{idVendor}=="0483", ATTRS{idProduct}=="5740", SYMLINK="dingus-mcu"
+KERNEL=="ttyACM[0-9]*", SUBSYSTEM=="tty", ATTRS{idVendor}=="0483", ATTRS{idProduct}=="5740", SYMLINK="ttyDingus"
 
