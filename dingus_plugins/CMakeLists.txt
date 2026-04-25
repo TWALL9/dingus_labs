@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(otomo_plugins)
+project(dingus_plugins)
 
 # Default to C99
 if(NOT CMAKE_C_STANDARD)
@@ -35,8 +35,8 @@ endforeach()
 
 add_library(${PROJECT_NAME}
   SHARED
-  src/otomo_diffdrive/otomo_diffdrive.cpp
-  src/otomo_controller/otomo_controller.cpp
+  src/dingus_diffdrive/dingus_diffdrive.cpp
+  src/dingus_controller/dingus_controller.cpp
 )
 
 target_include_directories(

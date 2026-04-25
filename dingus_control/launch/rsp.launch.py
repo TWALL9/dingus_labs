@@ -11,7 +11,7 @@ from launch_ros.actions import Node
 def generate_launch_description():
 
     # Specify the name of the package and path to xacro file within the package
-    pkg_name = "otomo_control"
+    pkg_name = "dingus_control"
     file_subpath = "description/robot.urdf.xacro"
 
     use_sim_time = LaunchConfiguration("use_sim_time")

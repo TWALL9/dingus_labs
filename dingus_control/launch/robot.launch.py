@@ -6,7 +6,7 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 
 
 def generate_launch_description():
-    pkg_name = 'otomo_control'
+    pkg_name = 'dingus_control'
     pkg_share_dir = get_package_share_directory(pkg_name)
 
     rsp = IncludeLaunchDescription(

@@ -6,7 +6,7 @@
 
 #include "rclcpp/rclcpp.hpp"
 
-namespace otomo_plugins::diffdrive_test_node {
+namespace dingus_plugins::diffdrive_test_node {
 
 bool encode_message(async_serial::KissOutputStream& out_kiss, otomo::TopMsg& msg) {
   std::string out_string;
@@ -109,7 +109,7 @@ private:
 
 int main(int argc, char * argv[]) {
   rclcpp::init(argc, argv);
-  rclcpp::spin(std::make_shared<otomo_plugins::diffdrive_test_node::DiffdriveTestNode>());
+  rclcpp::spin(std::make_shared<dingus_plugins::diffdrive_test_node::DiffdriveTestNode>());
   rclcpp::shutdown();
 
   return 0;

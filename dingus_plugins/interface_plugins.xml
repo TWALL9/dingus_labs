@@ -1,9 +1,9 @@
-<library path="otomo_plugins">
-  <class name="otomo_plugins/OtomoDiffdrive"
-         type="otomo_plugins::controllers::OtomoDiffdrive"
+<library path="dingus_plugins">
+  <class name="dingus_plugins/DingusDiffdrive"
+         type="dingus_plugins::controllers::DingusDiffdrive"
          base_class_type="hardware_interface::SystemInterface">
     <description>
-      Hardware Interface for Otomo's differential drive.
+      Hardware Interface for Dingus's differential drive.
     </description>
   </class>
 </library>

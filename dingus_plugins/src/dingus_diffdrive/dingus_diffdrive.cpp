@@ -1,4 +1,4 @@
-#include "otomo_plugins/otomo_diffdrive.hpp"
+#include "dingus_plugins/dingus_diffdrive.hpp"
 #include "otomo_msgs/otomo.pb.h"
 
 #include <iostream>
@@ -6,7 +6,7 @@
 #include <iomanip>
 #include <sstream>
 
-namespace otomo_plugins::controllers {
+namespace dingus_plugins::controllers {
 
 bool encode_message(async_serial::KissOutputStream& out_kiss, otomo::TopMsg& msg) {
   std::string out_string;
@@ -24,9 +24,9 @@ bool encode_message(async_serial::KissOutputStream& out_kiss, otomo::TopMsg& msg
   return true;
 }
 
-OtomoDiffdrive::cb_return OtomoDiffdrive::on_init(const hardware_interface::HardwareComponentInterfaceParams& params) {
-  if (hardware_interface::SystemInterface::on_init(params) != OtomoDiffdrive::cb_return::SUCCESS) {
-    return OtomoDiffdrive::cb_return::ERROR;
+DingusDiffdrive::cb_return DingusDiffdrive::on_init(const hardware_interface::HardwareComponentInterfaceParams& params) {
+  if (hardware_interface::SystemInterface::on_init(params) != DingusDiffdrive::cb_return::SUCCESS) {
+    return DingusDiffdrive::cb_return::ERROR;
   }
 
   time_ = std::chrono::system_clock::now();
@@ -50,10 +50,10 @@ OtomoDiffdrive::cb_return OtomoDiffdrive::on_init(const hardware_interface::Hard
 
   imu_.name = info_.hardware_parameters["imu_name"];
 
-  return OtomoDiffdrive::cb_return::SUCCESS;
+  return DingusDiffdrive::cb_return::SUCCESS;
 }
 
-std::vector<hardware_interface::StateInterface> OtomoDiffdrive::export_state_interfaces() {
+std::vector<hardware_interface::StateInterface> DingusDiffdrive::export_state_interfaces() {
   std::vector<hardware_interface::StateInterface> state_interfaces;
 
   state_interfaces.emplace_back(hardware_interface::StateInterface(l_wheel_.name(),
@@ -93,7 +93,7 @@ std::vector<hardware_interface::StateInterface> OtomoDiffdrive::export_state_int
   return state_interfaces;
 }
 
-std::vector<hardware_interface::CommandInterface> OtomoDiffdrive::export_command_interfaces() {
+std::vector<hardware_interface::CommandInterface> DingusDiffdrive::export_command_interfaces() {
   std::vector<hardware_interface::CommandInterface> command_interfaces;
   command_interfaces.emplace_back(hardware_interface::CommandInterface(l_wheel_.name(),
     hardware_interface::HW_IF_VELOCITY, &l_wheel_.cmd_));
@@ -110,40 +110,40 @@ std::vector<hardware_interface::CommandInterface> OtomoDiffdrive::export_command
   return command_interfaces;
 }
 
-OtomoDiffdrive::cb_return OtomoDiffdrive::on_activate(const rclcpp_lifecycle::State&) {
-  RCLCPP_INFO(get_logger(), "Starting OtomoDiffdrive controller");
+DingusDiffdrive::cb_return DingusDiffdrive::on_activate(const rclcpp_lifecycle::State&) {
+  RCLCPP_INFO(get_logger(), "Starting DingusDiffdrive controller");
 
   if (!serial_port_->open()) {
     RCLCPP_ERROR(get_logger(), "Cannot open serial port!");
-    return OtomoDiffdrive::cb_return::ERROR;
+    return DingusDiffdrive::cb_return::ERROR;
   }
 
   serial_port_->add_receive_callback(std::bind(
-    &OtomoDiffdrive::async_serial_callback, this, std::placeholders::_1, std::placeholders::_2
+    &DingusDiffdrive::async_serial_callback, this, std::placeholders::_1, std::placeholders::_2
   ));
 
-  return OtomoDiffdrive::cb_return::SUCCESS;
+  return DingusDiffdrive::cb_return::SUCCESS;
 }
 
-OtomoDiffdrive::cb_return OtomoDiffdrive::on_deactivate(const rclcpp_lifecycle::State&) {
-  RCLCPP_INFO(get_logger(), "Stopping OtomoDiffdrive controller");
+DingusDiffdrive::cb_return DingusDiffdrive::on_deactivate(const rclcpp_lifecycle::State&) {
+  RCLCPP_INFO(get_logger(), "Stopping DingusDiffdrive controller");
 
   serial_port_->close();
 
-  return OtomoDiffdrive::cb_return::SUCCESS;
+  return DingusDiffdrive::cb_return::SUCCESS;
 }
 
-OtomoDiffdrive::hwi_return OtomoDiffdrive::read(const rclcpp::Time&, const rclcpp::Duration&) {
+DingusDiffdrive::hwi_return DingusDiffdrive::read(const rclcpp::Time&, const rclcpp::Duration&) {
   // Most reading is done in the async_serial_callback
   if (!serial_port_->is_open()) {
-    return OtomoDiffdrive::hwi_return::ERROR;
+    return DingusDiffdrive::hwi_return::ERROR;
   }
-  return OtomoDiffdrive::hwi_return::OK;
+  return DingusDiffdrive::hwi_return::OK;
 }
 
-OtomoDiffdrive::hwi_return OtomoDiffdrive::write(const rclcpp::Time&, const rclcpp::Duration&) {
+DingusDiffdrive::hwi_return DingusDiffdrive::write(const rclcpp::Time&, const rclcpp::Duration&) {
   if (!serial_port_->is_open()) {
-    return OtomoDiffdrive::hwi_return::ERROR;
+    return DingusDiffdrive::hwi_return::ERROR;
   }
 
   auto l_cmd = l_wheel_.cmd_;  // rad/s
@@ -191,10 +191,10 @@ OtomoDiffdrive::hwi_return OtomoDiffdrive::write(const rclcpp::Time&, const rclc
     }
   }
 
-  return OtomoDiffdrive::hwi_return::OK;
+  return DingusDiffdrive::hwi_return::OK;
 }
 
-void OtomoDiffdrive::async_serial_callback(const std::vector<uint8_t>& buf, size_t num_received) {
+void DingusDiffdrive::async_serial_callback(const std::vector<uint8_t>& buf, size_t num_received) {
   for (size_t i = 0; i < num_received; i++) {
     int ret = recv_buf_.add_byte(buf[i]);
     if (ret != 0) {
@@ -256,10 +256,10 @@ void OtomoDiffdrive::async_serial_callback(const std::vector<uint8_t>& buf, size
   }
 }
 
-}  // namespace otomo_plugins::controllers
+}  // namespace dingus_plugins::controllers
 
 #include "pluginlib/class_list_macros.hpp"
 PLUGINLIB_EXPORT_CLASS(
-  otomo_plugins::controllers::OtomoDiffdrive,
+  dingus_plugins::controllers::DingusDiffdrive,
   hardware_interface::SystemInterface
 )

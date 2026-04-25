@@ -12,7 +12,7 @@ from launch_ros.actions import Node
 
 
 def generate_launch_description():
-    pkg_name = 'otomo_control'
+    pkg_name = 'dingus_control'
     pkg_share_dir = get_package_share_directory(pkg_name)
 
     robot_description = Command(

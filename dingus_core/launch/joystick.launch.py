@@ -8,7 +8,7 @@ from ament_index_python.packages import get_package_share_directory
 
 
 def generate_launch_description():
-    pkg_share_dir = get_package_share_directory("otomo_core")
+    pkg_share_dir = get_package_share_directory("dingus_core")
 
     use_sim_time = LaunchConfiguration("use_sim_time")
 

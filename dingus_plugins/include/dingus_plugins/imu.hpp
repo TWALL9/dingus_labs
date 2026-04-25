@@ -2,7 +2,7 @@
 
 #include <string>
 
-namespace otomo_plugins::controllers {
+namespace dingus_plugins::controllers {
 struct Imu {
     std::string name;
 

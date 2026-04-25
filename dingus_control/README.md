@@ -1,15 +1,15 @@
-# otomo_control
-Contains config and launch files for ros2_control on otomo.  Also contains the URDF description
+# dingus_control
+Contains config and launch files for ros2_control on dingus.  Also contains the URDF description
 
 # how to launch mapping
 
 1. launch sim or lidar driver
 ```bash
-ros2 launch otomo_sim sim.launch.py world:=/your/world/here.sdf
+ros2 launch dingus_sim sim.launch.py world:=/your/world/here.sdf
 
 # OR
 
-ros2 launch otomo_core rplidar.launch.py
+ros2 launch dingus_core rplidar.launch.py
 ```
 
 2. launch slam_toolbox
@@ -24,11 +24,11 @@ ros2 launch slam_toolbox online_async_launch.py # (with use_sim_time:=true for s
 # how to launch navigation
 1. launch sim or lidar driver
 ```bash
-ros2 launch otomo_sim sim.launch.py world:=/your/world/here.sdf
+ros2 launch dingus_sim sim.launch.py world:=/your/world/here.sdf
 
 # OR
 
-ros2 launch otomo_core rplidar.launch.py
+ros2 launch dingus_core rplidar.launch.py
 ```
 
 2. launch rviz using the nav2 config
@@ -38,7 +38,7 @@ ros2 run rviz2 rviz2 -d $(ros2 pkg prefix nav2_bringup)/share/nav2_bringup/rviz/
 
 3. launch nav2_bringup
 ```bash
-ros2 launch nav2_bringup bringup_launch.py params_file:=/path/to/ws/install/otomo_control/share/otomo_control/config/nav2_jazzy_params.yaml map:=/path/to/map.yaml #use_sim_time:=True
+ros2 launch nav2_bringup bringup_launch.py params_file:=/path/to/ws/install/dingus_control/share/dingus_control/config/nav2_jazzy_params.yaml map:=/path/to/map.yaml #use_sim_time:=True
 ```
 
 4. set the initial pose based on real life or sim

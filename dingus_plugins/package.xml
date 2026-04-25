@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>otomo_plugins</name>
+  <name>dingus_plugins</name>
   <version>0.0.0</version>
-  <description>ros2_control interface plugins for Otomo personal robot</description>
+  <description>ros2_control interface plugins for Dingus personal robot</description>
   <maintainer email="thomaswallis0@gmail.com">Tom Wallis</maintainer>
   <license>GPL</license>
 

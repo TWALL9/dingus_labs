@@ -1,2 +1,2 @@
-# otomo_plugins
-ROS2 plugins for otomo
+# dingus_plugins
+ROS2 plugins for dingus

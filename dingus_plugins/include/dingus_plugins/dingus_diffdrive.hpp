@@ -14,23 +14,23 @@
 #include "async_serial/serial_port.hpp"
 #include "async_serial/kiss_tnc.hpp"
 
-#include "otomo_plugins/config.hpp"
-#include "otomo_plugins/wheel.hpp"
-#include "otomo_plugins/pid_params.hpp"
-#include "otomo_plugins/imu.hpp"
+#include "dingus_plugins/config.hpp"
+#include "dingus_plugins/wheel.hpp"
+#include "dingus_plugins/pid_params.hpp"
+#include "dingus_plugins/imu.hpp"
 
 #include "otomo_msgs/msg/diffdrive.hpp"
 
-namespace otomo_plugins::controllers {
+namespace dingus_plugins::controllers {
 
-class OtomoDiffdrive : public hardware_interface::SystemInterface {
+class DingusDiffdrive : public hardware_interface::SystemInterface {
 public:
   using cb_return = hardware_interface::CallbackReturn;
   using hwi_return = hardware_interface::return_type;
 
-  RCLCPP_SHARED_PTR_DEFINITIONS(OtomoDiffdrive)
+  RCLCPP_SHARED_PTR_DEFINITIONS(DingusDiffdrive)
 
-  OtomoDiffdrive() = default;
+  DingusDiffdrive() = default;
 
   cb_return on_init(const hardware_interface::HardwareComponentInterfaceParams& params) override;
   cb_return on_activate(const rclcpp_lifecycle::State& previous_state) override;

@@ -1,15 +1,15 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>otomo_control</name>
+  <name>dingus_control</name>
   <version>0.0.0</version>
-  <description>Control parameters and URDF for Otomo personal robot</description>
+  <description>Control parameters and URDF for dingus personal robot</description>
   <maintainer email="thomaswallis0@gmail.com">Tom Wallis</maintainer>
   <license>GPL</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
-  <depend>otomo_plugins</depend>
+  <depend>dingus_plugins</depend>
 
   <exec_depend>controller_manager</exec_depend>
   <exec_depend>robot_state_publisher</exec_depend>

@@ -1,6 +1,6 @@
-<library path="otomo_plugins">
-  <class name="otomo_plugins/OtomoController"
-         type="otomo_plugins::controllers::OtomoController"
+<library path="dingus_plugins">
+  <class name="dingus_plugins/DingusController"
+         type="dingus_plugins::controllers::DingusController"
          base_class_type="controller_interface::ControllerInterface">
     <description>
       Controller for non-diffdrive components of robot

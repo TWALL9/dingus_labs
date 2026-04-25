@@ -3,7 +3,7 @@
 #include <string>
 #include<cmath>
 
-namespace otomo_plugins::controllers {
+namespace dingus_plugins::controllers {
 
 class Wheel {
 public:

@@ -1,14 +1,14 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
     <xacro:unless value="$(arg use_sim_mode)">
-        <ros2_control name="RealOtomo" type="system">
+        <ros2_control name="RealDingus" type="system">
             <hardware>
-                <plugin>otomo_plugins/OtomoDiffdrive</plugin>
+                <plugin>dingus_plugins/DingusDiffdrive</plugin>
                 <param name="left_wheel_name">left_wheel_joint</param>
                 <param name="right_wheel_name">right_wheel_joint</param>
                 <param name="imu_name">imu_sensor</param>
                 <param name="loop_rate">100</param>
-                <param name="serial_port">/dev/ttyOtomo</param>
+                <param name="serial_port">/dev/ttyDingus</param>
                 <param name="serial_baud_rate">460800</param>
                 <param name="timeout">1000</param>
                 <param name="encoder_count">6500</param>
@@ -72,8 +72,8 @@
 
     <gazebo>
         <plugin name="gz_ros2_control::GazeboSimROS2ControlPlugin" filename="libgz_ros2_control-system.so">
-            <parameters>$(find otomo_control)/config/controllers.yaml</parameters>
-            <parameters>$(find otomo_control)/config/gaz_ros2_ctl_use_sim.yaml</parameters>
+            <parameters>$(find dingus_control)/config/controllers.yaml</parameters>
+            <parameters>$(find dingus_control)/config/gaz_ros2_ctl_use_sim.yaml</parameters>
         </plugin>
     </gazebo>
 

@@ -9,7 +9,7 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 
 
 def generate_launch_description():
-    pkg_share_dir = get_package_share_directory("otomo_control")
+    pkg_share_dir = get_package_share_directory("dingus_control")
 
     use_sim_time = LaunchConfiguration("use_sim_time")
     autostart = LaunchConfiguration("autostart")

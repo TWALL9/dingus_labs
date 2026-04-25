@@ -2,7 +2,7 @@
 
 #include <string>
 
-namespace otomo_plugins::controllers {
+namespace dingus_plugins::controllers {
 
 struct DiffdriveConfiguration {
   std::string left_wheel_name_ { "left_wheel" };

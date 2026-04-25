@@ -1,5 +1,5 @@
-#ifndef OTOMO_PLUGINS__OTOMO_CONTROLLER_HPP_
-#define OTOMO_PLUGINS__OTOMO_CONTROLLER_HPP_
+#ifndef DINGUS_PLUGINS__DINGUS_CONTROLLER_HPP_
+#define DINGUS_PLUGINS__DINGUS_CONTROLLER_HPP_
 
 #include <chrono>
 #include <string>
@@ -12,18 +12,18 @@
 
 #include "otomo_msgs/msg/pid.hpp"
 
-#include "otomo_plugins/pid_params.hpp"
+#include "dingus_plugins/pid_params.hpp"
 
-namespace otomo_plugins::controllers {
+namespace dingus_plugins::controllers {
 
 using ci_return = controller_interface::return_type;
 using interface_return = controller_interface::InterfaceConfiguration;
 using cb_return = rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn;
 
-class OtomoController : public controller_interface::ControllerInterface {
+class DingusController : public controller_interface::ControllerInterface {
 public:
-  OtomoController();
-  RCLCPP_SHARED_PTR_DEFINITIONS(OtomoController)
+  DingusController();
+  RCLCPP_SHARED_PTR_DEFINITIONS(DingusController)
 
   interface_return command_interface_configuration() const override;
   interface_return state_interface_configuration() const override;
@@ -53,4 +53,4 @@ protected:
 
 }
 
-#endif // OTOMO_PLUGINS__OTOMO_CONTROLLER_HPP_
+#endif // DINGUS_PLUGINS__DINGUS_CONTROLLER_HPP_

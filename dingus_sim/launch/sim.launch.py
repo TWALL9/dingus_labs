@@ -11,7 +11,7 @@ from launch_ros.actions import Node
 
 
 def generate_launch_description():
-    package_name = "otomo_sim"
+    package_name = "dingus_sim"
     pkg_share_dir = get_package_share_directory(package_name)
 
     # include state publisher, which also launches URDF
@@ -19,7 +19,7 @@ def generate_launch_description():
         PythonLaunchDescriptionSource(
             [
                 os.path.join(
-                    get_package_share_directory("otomo_control"),
+                    get_package_share_directory("dingus_control"),
                     "launch",
                     "rsp.launch.py",
                 )
@@ -32,7 +32,7 @@ def generate_launch_description():
         PythonLaunchDescriptionSource(
             [
                 os.path.join(
-                    get_package_share_directory("otomo_control"),
+                    get_package_share_directory("dingus_control"),
                     "launch",
                     "twist_mux.launch.py",
                 )
@@ -45,7 +45,7 @@ def generate_launch_description():
         PythonLaunchDescriptionSource(
             [
                 os.path.join(
-                    get_package_share_directory("otomo_core"),
+                    get_package_share_directory("dingus_core"),
                     "launch",
                     "joystick.launch.py",
                 )
@@ -86,7 +86,7 @@ def generate_launch_description():
     spawn_entity = Node(
         package="ros_gz_sim",
         executable="create",
-        arguments=["-topic", "/robot_description", "-name", "otomo_bot", "-z", "0.1"],
+        arguments=["-topic", "/robot_description", "-name", "dingus_bot", "-z", "0.1"],
         output="screen",
     )
 
@@ -128,7 +128,7 @@ def generate_launch_description():
     # controllers = IncludeLaunchDescription(
     #     PythonLaunchDescriptionSource(
     #         [os.path.join(
-    #             get_package_share_directory('otomo_control'), 'launch', 'controllers.launch.py'
+    #             get_package_share_directory('dingus_control'), 'launch', 'controllers.launch.py'
     #         )]),
     #     launch_arguments={'use_sim_time': 'true'}.items()
     # )

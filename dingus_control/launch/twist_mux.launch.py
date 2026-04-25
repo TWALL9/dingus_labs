@@ -7,7 +7,7 @@ from launch_ros.actions import Node
 
 
 def generate_launch_description():
-    this_package = "otomo_control"
+    this_package = "dingus_control"
 
     use_sim_time = LaunchConfiguration("use_sim_time")
 

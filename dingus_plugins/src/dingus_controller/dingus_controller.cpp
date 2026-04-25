@@ -1,11 +1,11 @@
 #include <memory>
 
-#include "otomo_plugins/otomo_controller.hpp"
+#include "dingus_plugins/dingus_controller.hpp"
 
 #include "lifecycle_msgs/msg/state.hpp"
 #include "rclcpp_lifecycle/node_interfaces/lifecycle_node_interface.hpp"
 
-namespace otomo_plugins::controllers {
+namespace dingus_plugins::controllers {
 
 using std::placeholders::_1;
 
@@ -23,9 +23,9 @@ std::vector<std::string> find_by_split(std::string s, std::string delim = " ") {
   return v;
 }
 
-OtomoController::OtomoController() : controller_interface::ControllerInterface() {}
+DingusController::DingusController() : controller_interface::ControllerInterface() {}
 
-cb_return OtomoController::on_init() {
+cb_return DingusController::on_init() {
   try {
     // default to nothing,
     auto_declare<double>("pid_default_p_term", 0.0);
@@ -35,7 +35,7 @@ cb_return OtomoController::on_init() {
     auto_declare<std::vector<std::string>>("pid_controllers", {});
   } catch (const std::exception& e) {
     RCLCPP_ERROR(get_node()->get_logger(),
-      "Exception during otomo_controller init stage: %s",
+      "Exception during dingus_controller init stage: %s",
       e.what()
     );
     return cb_return::ERROR;
@@ -44,7 +44,7 @@ cb_return OtomoController::on_init() {
   return cb_return::SUCCESS;
 }
 
-interface_return OtomoController::command_interface_configuration() const {
+interface_return DingusController::command_interface_configuration() const {
   controller_interface::InterfaceConfiguration conf = { controller_interface::interface_configuration_type::INDIVIDUAL, {} };
 
   if (pid_controllers_.empty()) {
@@ -62,12 +62,12 @@ interface_return OtomoController::command_interface_configuration() const {
   return conf;
 }
 
-interface_return OtomoController::state_interface_configuration() const {
+interface_return DingusController::state_interface_configuration() const {
   std::vector<std::string> state_interfaces;
   return { controller_interface::interface_configuration_type::NONE, state_interfaces };
 }
 
-cb_return OtomoController::on_configure(const rclcpp_lifecycle::State&) {
+cb_return DingusController::on_configure(const rclcpp_lifecycle::State&) {
   auto logger = get_node()->get_logger();
 
   std::vector<std::string> controller_names;
@@ -88,14 +88,14 @@ cb_return OtomoController::on_configure(const rclcpp_lifecycle::State&) {
     RCLCPP_ERROR(logger, "finding params for %s", name.c_str());
     if (pid_controllers_.find(name) == pid_controllers_.end()) {
       PidParams param { default_p, default_i, default_d, false };
-      // auto fn std::bind(&OtomoController::pid_update_cb, this, _1);
+      // auto fn std::bind(&DingusController::pid_update_cb, this, _1);
       pid_controllers_.insert({ name, param });
     }
   }
 
   // todo create vec of subs for individual pid controllers
   pid_subs_ = get_node()->create_subscription<otomo_msgs::msg::Pid>(
-    "/otomo_controller/set_pid/default",
+    "/dingus_controller/set_pid/default",
     rclcpp::SystemDefaultsQoS(),
     [this](const std::shared_ptr<otomo_msgs::msg::Pid> pid) -> void {
       RCLCPP_WARN(get_node()->get_logger(), "Received PID update for default");
@@ -110,7 +110,7 @@ cb_return OtomoController::on_configure(const rclcpp_lifecycle::State&) {
   return cb_return::SUCCESS;
 }
 
-cb_return OtomoController::on_activate(const rclcpp_lifecycle::State&) {
+cb_return DingusController::on_activate(const rclcpp_lifecycle::State&) {
   auto logger = get_node()->get_logger();
 
   registered_pid_handles_.clear();
@@ -175,14 +175,14 @@ cb_return OtomoController::on_activate(const rclcpp_lifecycle::State&) {
   }
 }
 
-cb_return OtomoController::on_deactivate(const rclcpp_lifecycle::State&) {
+cb_return DingusController::on_deactivate(const rclcpp_lifecycle::State&) {
   pid_controllers_.clear();
   is_halted_ = true;
 
   return cb_return::SUCCESS;
 }
 
-ci_return OtomoController::update(const rclcpp::Time&, const rclcpp::Duration&) {
+ci_return DingusController::update(const rclcpp::Time&, const rclcpp::Duration&) {
   auto logger = get_node()->get_logger();
 
   bool inactive = get_lifecycle_state().id() == lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE;
@@ -212,9 +212,9 @@ ci_return OtomoController::update(const rclcpp::Time&, const rclcpp::Duration&) 
 
 
 
-} // namespace otomo_plugins::controllers
+} // namespace dingus_plugins::controllers
 
 #include "class_loader/register_macro.hpp"
 
 CLASS_LOADER_REGISTER_CLASS(
-  otomo_plugins::controllers::OtomoController, controller_interface::ControllerInterface)
+  dingus_plugins::controllers::DingusController, controller_interface::ControllerInterface)

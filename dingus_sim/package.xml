@@ -1,16 +1,16 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>otomo_sim</name>
+  <name>dingus_sim</name>
   <version>0.0.0</version>
-  <description>Gazebo simulation config for Otomo personal robot</description>
+  <description>Gazebo simulation config for dingus personal robot</description>
   <maintainer email="thomaswallis0@gmail.com">Tom Wallis</maintainer>
   <license>GPL</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
-  <exec_depend>otomo_core</exec_depend>
-  <exec_depend>otomo_control</exec_depend>
+  <exec_depend>dingus_core</exec_depend>
+  <exec_depend>dingus_control</exec_depend>
 
   <exec_depend>ros_gz_sim</exec_depend>
   <exec_depend>ros_gz_bridge</exec_depend>

@@ -1,9 +1,9 @@
-#ifndef OTOMO_PLUGINS__PID_PARAMS_HPP_
-#define OTOMO_PLUGINS__PID_PARAMS_HPP_
+#ifndef DINGUS_PLUGINS__PID_PARAMS_HPP_
+#define DINGUS_PLUGINS__PID_PARAMS_HPP_
 
 #include <string_view>
 
-namespace otomo_plugins::controllers {
+namespace dingus_plugins::controllers {
 
 constexpr char HW_IF_PROPORTIONAL[] = "proportional";
 constexpr char HW_IF_INTEGRAL[]     = "integral";
@@ -16,6 +16,6 @@ struct PidParams {
   bool update_pid = false;
 };
 
-}  // namespace otomo_plugins::controllers
+}  // namespace dingus_plugins::controllers
 
-#endif  // OTOMO_PLUGINS__PID_PARAMS_HPP_
+#endif  // DINGUS_PLUGINS__PID_PARAMS_HPP_

@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>otomo_core</name>
+  <name>dingus_core</name>
   <version>0.0.0</version>
-  <description>Config and launch files for physical interfaces on Otomo personal robot</description>
+  <description>Config and launch files for physical interfaces on dingus personal robot</description>
   <maintainer email="thomaswallis0@gmail.com">Tom Wallis</maintainer>
   <license>GPL</license>
 

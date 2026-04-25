@@ -8,7 +8,7 @@ controller_manager:
       type: diff_drive_controller/DiffDriveController
 
     pid_controller:
-      type: otomo_plugins/OtomoController
+      type: dingus_plugins/DingusController
 
     joint_broad:
       type: joint_state_broadcaster/JointStateBroadcaster
