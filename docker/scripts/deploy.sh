@@ -9,8 +9,8 @@ Usage:
   ./deploy.sh [IMAGE_PATH] [TAG]
   ./deploy.sh [TAG]
 Examples:
-  ./deploy.sh ghcr.io/twall9/dingus latest
-  ./deploy.sh ghcr.io/twall9/dingus docker-registry
+  ./deploy.sh ghcr.io/twall9/dingus_labs latest
+  ./deploy.sh ghcr.io/twall9/dingus_labs docker-registry
   ./deploy.sh docker-registry
   ./deploy.sh
 EOF
@@ -21,7 +21,7 @@ if [[ "$1" == "-h" || "$1" == "--help" ]]; then
     exit 0
 fi
 
-DEFAULT_REGISTRY_PATH="ghcr.io/twall9/dingus"
+DEFAULT_REGISTRY_PATH="ghcr.io/twall9/dingus_labs"
 ARG1="${1:-}"
 ARG2="${2:-}"
 
@@ -49,12 +49,13 @@ echo
 # Ensure workspace directory exists
 mkdir -p "$WS_HOST_DIR"
 
-# Pull latest image
-echo "Pulling latest image from GHCR..."
+# Pull image
+echo "Pulling GHCR image: $IMAGE_TAG"
 if docker pull "$IMAGE_TAG"; then
     echo "Image pulled successfully"
 else
-    echo "Failed to pull image. Check your GHCR authentication and image name."
+    echo "Failed to pull image: $IMAGE_TAG"
+    echo "Check your GHCR authentication and image name."
     exit 1
 fi
 
