@@ -1,5 +1,4 @@
 # Development Docker image for Dingus ROS2 packages
-# Targets ARM64 (Raspberry Pi 4/5) and compatible hardware
 # Hardware-only (no Gazebo simulation)
 
 FROM ros:jazzy
@@ -54,4 +53,4 @@ RUN . /opt/ros/jazzy/setup.sh && colcon build --symlink-install
 
 # Source setup script on container start
 RUN echo "source /opt/ros/jazzy/setup.bash" >> /root/.bashrc && \
-    echo "source /dingus_ws/install/setup.bash" >> /root/.bashrc
+    echo "source /dingus_ws/install/local_setup.bash" >> /root/.bashrc

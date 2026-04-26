@@ -1,15 +1,25 @@
 #!/bin/bash
-# Deploy script: Pull a specific GHCR image tag and start the container
-# Usage:
-#   ./deploy.sh [IMAGE_PATH] [TAG]
-#   ./deploy.sh [TAG]
-# Examples:
-#   ./deploy.sh ghcr.io/twall9/dingus latest
-#   ./deploy.sh ghcr.io/twall9/dingus docker-registry
-#   ./deploy.sh docker-registry
-#   ./deploy.sh
 
 set -e
+
+print_help() {
+    cat <<'EOF'
+Deploy script: Pull a specific GHCR image tag and start the container
+Usage:
+  ./deploy.sh [IMAGE_PATH] [TAG]
+  ./deploy.sh [TAG]
+Examples:
+  ./deploy.sh ghcr.io/twall9/dingus latest
+  ./deploy.sh ghcr.io/twall9/dingus docker-registry
+  ./deploy.sh docker-registry
+  ./deploy.sh
+EOF
+}
+
+if [[ "$1" == "-h" || "$1" == "--help" ]]; then
+    print_help
+    exit 0
+fi
 
 DEFAULT_REGISTRY_PATH="ghcr.io/twall9/dingus"
 ARG1="${1:-}"
