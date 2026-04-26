@@ -53,7 +53,7 @@ Ensure your code is pushed to GitHub with:
 - `docker/scripts/` (deployment scripts)
 - `.github/workflows/docker-build.yml` (CI/CD workflow)
 
-The workflow automatically triggers on push to `main` branch.
+The workflow automatically triggers on push to any branch and will tag images with the branch name. The `latest` tag is still produced for `main`.
 
 ### Step 2: Verify GitHub Actions Build
 
@@ -124,8 +124,14 @@ chmod +x ~/{deploy,stop,logs}.sh
 ~/deploy.sh
 ```
 
+If you are on a non-main branch, deploy the branch tag instead:
+
+```bash
+~/deploy.sh docker-registry
+```
+
 The script will:
-1. Pull the latest image from GHCR: `ghcr.io/YOUR_USERNAME/dingus_labs:latest`
+1. Pull the requested image from GHCR, for example `ghcr.io/YOUR_USERNAME/dingus_labs:latest` or `ghcr.io/YOUR_USERNAME/dingus_labs:docker-registry`
 2. Stop any existing container
 3. Start a new container with:
    - Privileged access (for hardware)

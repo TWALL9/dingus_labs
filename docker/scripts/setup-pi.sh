@@ -12,7 +12,7 @@ echo
 # Check if running on ARM64
 ARCH=$(uname -m)
 if [[ "$ARCH" != "aarch64" ]]; then
-    echo "⚠️  Warning: This script is optimized for ARM64 (aarch64)"
+    echo "Warning: This script is optimized for ARM64 (aarch64)"
     echo "   Detected architecture: $ARCH"
     echo "   The image may not run correctly on this system"
     echo
@@ -20,20 +20,20 @@ fi
 
 # Check if Docker is installed
 if ! command -v docker &> /dev/null; then
-    echo "❌ Docker is not installed. Installing Docker..."
+    echo "Docker is not installed. Installing Docker..."
     curl -fsSL https://get.docker.com -o get-docker.sh
     sudo sh get-docker.sh
     sudo usermod -aG docker "$USER"
-    echo "✅ Docker installed. You may need to log out and back in for group changes to take effect."
+    echo "Docker installed. You may need to log out and back in for group changes to take effect."
 else
-    echo "✅ Docker is installed"
+    echo "Docker is installed"
 fi
 
 echo
 
 # Check if user can run docker without sudo
 if ! docker ps &> /dev/null; then
-    echo "⚠️  Warning: You don't have permission to run docker commands without sudo"
+    echo "Warning: You don't have permission to run docker commands without sudo"
     echo "   Adding current user to docker group..."
     sudo usermod -aG docker "$USER"
     echo "   Please log out and back in for changes to take effect"
@@ -56,9 +56,9 @@ echo "Logging in to GHCR..."
 echo "$GITHUB_PAT" | docker login ghcr.io -u "$GITHUB_USER" --password-stdin
 
 if [ $? -eq 0 ]; then
-    echo "✅ Successfully authenticated with GHCR"
+    echo "Successfully authenticated with GHCR"
 else
-    echo "❌ Failed to authenticate with GHCR"
+    echo "Failed to authenticate with GHCR"
     exit 1
 fi
 
@@ -78,7 +78,7 @@ echo
 
 # Display next steps
 echo "===================================================="
-echo "✅ Setup complete!"
+echo "                Setup complete!                     "
 echo "===================================================="
 echo
 echo "Next steps:"
