@@ -38,7 +38,7 @@ CONTAINER_NAME="dingus_ws"
 WS_HOST_DIR="${HOME}/dingus_ws"
 
 echo "===================================================="
-echo "Deploying Dingus Development Container"
+echo "Deploying Dingus Container"
 echo "===================================================="
 echo
 echo "Image:      $IMAGE_TAG"

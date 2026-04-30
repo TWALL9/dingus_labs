@@ -1,0 +1,18 @@
+# Development Docker image for Dingus ROS2 packages
+# Inherits from Dockerfile.base
+# Expects source code to be mounted at /dingus_ws/src
+# Build artifacts (install/, build/, log/) are ephemeral
+# User runs: colcon build --symlink-install (inside container)
+
+FROM dingus:base
+
+# Create workspace directory (will be mounted from host)
+RUN mkdir -p /dingus_ws/src
+
+WORKDIR /dingus_ws
+
+# Conditional workspace setup for mounted source
+RUN echo "if [ -f /dingus_ws/install/local_setup.bash ]; then source /dingus_ws/install/local_setup.bash; fi" >> /root/.bashrc
+
+# Default shell
+CMD ["/bin/bash"]

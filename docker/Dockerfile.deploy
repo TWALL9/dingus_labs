@@ -1,0 +1,19 @@
+# Production Docker image for Dingus ROS2 packages
+# Inherits from Dockerfile.base
+# Pre-built with cloned repos and compiled workspace
+
+FROM dingus:base
+
+# Clone source repositories
+WORKDIR /dingus_ws/src
+RUN git clone https://github.com/TWALL9/dingus_labs.git --recurse-submodules
+RUN git clone https://github.com/TWALL9/async_serial.git
+RUN git clone https://github.com/ros-teleop/twist_mux.git
+
+# Build ROS workspace
+WORKDIR /dingus_ws
+RUN . /opt/ros/jazzy/setup.sh && rosdep install --from-paths src --ignore-src -y
+RUN . /opt/ros/jazzy/setup.sh && colcon build --symlink-install
+
+# Source workspace setup in bashrc
+RUN echo "source /dingus_ws/install/local_setup.bash" >> /root/.bashrc

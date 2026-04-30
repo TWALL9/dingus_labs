@@ -44,10 +44,23 @@ jobs:
             type=semver,pattern={{major}}.{{minor}}
             type=raw,value=latest,enable={{is_default_branch}}
 
-      - name: Build and push Docker image
+      - name: Build and push base image
         uses: docker/build-push-action@v5
         with:
           context: ./docker
+          file: ./docker/Dockerfile.base
+          platforms: linux/arm64
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:base
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build and push production image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./docker
+          file: ./docker/Dockerfile.deploy
           platforms: linux/arm64
           push: true
           tags: ${{ steps.meta.outputs.tags }}
