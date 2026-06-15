@@ -1,7 +1,6 @@
 controller_manager:
   ros__parameters:
     update_rate: 100
-    # use_sim_time: true
     use_sim_time: false
 
     diff_controller:
@@ -12,13 +11,13 @@ controller_manager:
 
     joint_broad:
       type: joint_state_broadcaster/JointStateBroadcaster
-    
+
     imu_broadcaster:
       type: imu_sensor_broadcaster/IMUSensorBroadcaster
 
     l_motor_broadcaster:
       type: dingus_plugins/MotorBroadcaster
-    
+
     r_motor_broadcaster:
       type: dingus_plugins/MotorBroadcaster
 
@@ -29,11 +28,12 @@ imu_broadcaster:
 
 l_motor_broadcaster:
   ros__parameters:
-    sensor_name: left_wheel
+    wheel_name: left_wheel_joint
     frame_id: left_wheel
+
 r_motor_broadcaster:
   ros__parameters:
-    sensor_name: right_wheel
+    wheel_name: right_wheel_joint
     frame_id: right_wheel
 
 pid_controller:
@@ -55,6 +55,8 @@ diff_controller:
     wheel_separation: 0.35
     wheel_radius: 0.035
 
+    position_feedback: true
+
     # use_stamped_vel: false
 
     # open_loop: false
@@ -74,12 +76,9 @@ diff_controller:
     # publish_limited_velocity: x
     # velocity_rolling_window_size: x
 
-
-    # linear.x.has_velocity_limits: false
-    # linear.x.has_acceleration_limits: false
     # linear.x.has_jerk_limits: false
-    # linear.x.max_velocity: NAN
-    # linear.x.min_velocity: NAN
+    linear.x.max_velocity: 0.6
+    linear.x.min_velocity: -0.6
     # linear.x.max_acceleration: NAN
     # linear.x.min_acceleration: NAN
     # linear.x.max_jerk: NAN

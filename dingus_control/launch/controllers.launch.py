@@ -64,6 +64,18 @@ def generate_launch_description():
         arguments=['imu_broadcaster'],
     )
 
+    left_wheel_broad_spawner = Node(
+        package='controller_manager',
+        executable='spawner',
+        arguments=['l_motor_broadcaster'],
+    )
+
+    right_wheel_broad_spawner = Node(
+        package='controller_manager',
+        executable='spawner',
+        arguments=['r_motor_broadcaster'],
+    )
+
     delayed_diff_drive_spawner = RegisterEventHandler(
         event_handler=OnProcessStart(
             target_action=controller_manager,
@@ -84,11 +96,25 @@ def generate_launch_description():
             on_start=[joint_broad_spawner],
         )
     )
-    
+
     delayed_imu_broad_spawner = RegisterEventHandler(
         event_handler=OnProcessStart(
             target_action=controller_manager,
             on_start=[imu_broad_spawner],
+        )
+    )
+
+    delayed_left_wheel_broad_spawner = RegisterEventHandler(
+        event_handler=OnProcessStart(
+            target_action=controller_manager,
+            on_start=[left_wheel_broad_spawner],
+        )
+    )
+
+    delayed_right_wheel_broad_spawner = RegisterEventHandler(
+        event_handler=OnProcessStart(
+            target_action=controller_manager,
+            on_start=[right_wheel_broad_spawner],
         )
     )
 
@@ -99,4 +125,6 @@ def generate_launch_description():
         delayed_pid_spawner,
         delayed_joint_broad_spawner,
         delayed_imu_broad_spawner,
+        delayed_left_wheel_broad_spawner,
+        delayed_right_wheel_broad_spawner,
     ])
