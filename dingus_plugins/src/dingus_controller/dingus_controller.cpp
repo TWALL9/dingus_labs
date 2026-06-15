@@ -63,8 +63,7 @@ interface_return DingusController::command_interface_configuration() const {
 }
 
 interface_return DingusController::state_interface_configuration() const {
-  std::vector<std::string> state_interfaces;
-  return { controller_interface::interface_configuration_type::NONE, state_interfaces };
+  return { controller_interface::interface_configuration_type::NONE, {} };
 }
 
 cb_return DingusController::on_configure(const rclcpp_lifecycle::State&) {

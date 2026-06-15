@@ -16,10 +16,25 @@ controller_manager:
     imu_broadcaster:
       type: imu_sensor_broadcaster/IMUSensorBroadcaster
 
+    l_motor_broadcaster:
+      type: dingus_plugins/MotorBroadcaster
+    
+    r_motor_broadcaster:
+      type: dingus_plugins/MotorBroadcaster
+
 imu_broadcaster:
   ros__parameters:
     sensor_name: imu_sensor
     frame_id: imu_link
+
+l_motor_broadcaster:
+  ros__parameters:
+    sensor_name: left_wheel
+    frame_id: left_wheel
+r_motor_broadcaster:
+  ros__parameters:
+    sensor_name: right_wheel
+    frame_id: right_wheel
 
 pid_controller:
   ros__parameters:

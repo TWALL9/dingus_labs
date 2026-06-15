@@ -6,4 +6,11 @@
       Controller for non-diffdrive components of robot
     </description>
   </class>
+  <class name="dingus_plugins/MotorBroadcaster"
+         type="dingus_plugins::controllers::MotorBroadcaster"
+         base_class_type="controller_interface::ControllerInterface">
+    <description>
+      Controller for broadcasting motor states
+    </description>
+  </class>
 </library>

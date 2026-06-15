@@ -37,6 +37,7 @@ add_library(${PROJECT_NAME}
   SHARED
   src/dingus_diffdrive/dingus_diffdrive.cpp
   src/dingus_controller/dingus_controller.cpp
+  src/broadcasters/motor_broadcaster.cpp
 )
 
 target_include_directories(

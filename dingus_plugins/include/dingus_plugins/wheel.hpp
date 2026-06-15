@@ -27,7 +27,8 @@ public:
   double vel_ { 0.0 };
   double pos_ { 0.0 };
   double cmd_ { 0.0 };
-  double effort_ { 0.0 };
+  double counts_ { 0.0 };
+  double current_ { 0.0 };
 
 private:
   std::string name_;

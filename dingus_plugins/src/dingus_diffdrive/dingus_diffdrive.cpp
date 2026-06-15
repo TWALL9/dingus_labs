@@ -29,8 +29,6 @@ DingusDiffdrive::cb_return DingusDiffdrive::on_init(const hardware_interface::Ha
     return DingusDiffdrive::cb_return::ERROR;
   }
 
-  time_ = std::chrono::system_clock::now();
-
   config_.left_wheel_name_ = info_.hardware_parameters["left_wheel_name"];
   config_.right_wheel_name_ = info_.hardware_parameters["right_wheel_name"];
 
@@ -60,10 +58,18 @@ std::vector<hardware_interface::StateInterface> DingusDiffdrive::export_state_in
     hardware_interface::HW_IF_VELOCITY, &l_wheel_.vel_));
   state_interfaces.emplace_back(hardware_interface::StateInterface(l_wheel_.name(),
     hardware_interface::HW_IF_POSITION, &l_wheel_.pos_));
+  state_interfaces.emplace_back(hardware_interface::StateInterface(l_wheel_.name(),
+    hardware_interface::HW_IF_CURRENT, &l_wheel_.current_));
+  state_interfaces.emplace_back(hardware_interface::StateInterface(l_wheel_.name(),
+    "counts", &l_wheel_.counts_));
   state_interfaces.emplace_back(hardware_interface::StateInterface(r_wheel_.name(),
     hardware_interface::HW_IF_VELOCITY, &r_wheel_.vel_));
   state_interfaces.emplace_back(hardware_interface::StateInterface(r_wheel_.name(),
     hardware_interface::HW_IF_POSITION, &r_wheel_.pos_));
+  state_interfaces.emplace_back(hardware_interface::StateInterface(r_wheel_.name(),
+    hardware_interface::HW_IF_CURRENT, &r_wheel_.current_));
+  state_interfaces.emplace_back(hardware_interface::StateInterface(r_wheel_.name(),
+    "counts", &r_wheel_.counts_));
 
   RCLCPP_INFO(get_logger(), "Interfaces: %s", imu_.name.c_str());
 
@@ -76,7 +82,7 @@ std::vector<hardware_interface::StateInterface> DingusDiffdrive::export_state_in
   state_interfaces.emplace_back(hardware_interface::StateInterface(imu_.name,
     "orientation.w", &imu_.orientation_w));
 
-    state_interfaces.emplace_back(hardware_interface::StateInterface(imu_.name,
+  state_interfaces.emplace_back(hardware_interface::StateInterface(imu_.name,
     "angular_velocity.x", &imu_.angular_velocity_x));
   state_interfaces.emplace_back(hardware_interface::StateInterface(imu_.name,
     "angular_velocity.y", &imu_.angular_velocity_y));
@@ -216,8 +222,12 @@ void DingusDiffdrive::async_serial_callback(const std::vector<uint8_t>& buf, siz
         const auto state = proto_msg.state();
         l_wheel_.vel_ = state.left_motor().angular_velocity();
         l_wheel_.pos_ = state.left_motor().encoder();
+        l_wheel_.counts_ = state.left_motor().counts();
+        l_wheel_.current_ = state.left_motor().current();
         r_wheel_.vel_ = state.right_motor().angular_velocity();
         r_wheel_.pos_ = state.right_motor().encoder();
+        r_wheel_.counts_ = state.right_motor().counts();
+        r_wheel_.current_ = state.right_motor().current();
 
         const auto now = std::chrono::system_clock::now();
         double stamp = static_cast<double>(now.time_since_epoch().count()) / 1000000000;

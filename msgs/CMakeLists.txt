@@ -25,6 +25,7 @@ rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/Joystick.msg"
   "msg/Diffdrive.msg"
   "msg/Pid.msg"
+  "msg/Wheel.msg"
   DEPENDENCIES std_msgs
 )
 

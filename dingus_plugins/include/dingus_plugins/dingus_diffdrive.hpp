@@ -11,8 +11,8 @@
 #include "rclcpp_lifecycle/node_interfaces/lifecycle_node_interface.hpp"
 #include "rclcpp_lifecycle/state.hpp"
 
-#include "async_serial/serial_port.hpp"
-#include "async_serial/kiss_tnc.hpp"
+#include <async_serial/serial_port.hpp>
+#include <async_serial/kiss_tnc.hpp>
 
 #include "dingus_plugins/config.hpp"
 #include "dingus_plugins/wheel.hpp"
@@ -55,7 +55,6 @@ private:
 
   Imu imu_;
 
-  std::chrono::time_point<std::chrono::system_clock> time_;
   async_serial::KissInputStream recv_buf_;
 };
 
