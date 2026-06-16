@@ -2,7 +2,7 @@
 # Inherits from Dockerfile.base
 # Pre-built with cloned repos and compiled workspace
 
-FROM dingus:base
+FROM ghcr.io/twall9/dingus_labs:base
 
 # Clone source repositories
 WORKDIR /dingus_ws/src
