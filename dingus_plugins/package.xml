@@ -12,7 +12,6 @@
   <depend>otomo_msgs</depend>
   <depend>async_serial</depend>
   <depend>hardware_interface</depend>
-  <depend>semantic_components</depend>
   <depend>pluginlib</depend>
   <depend>rclcpp</depend>
 
