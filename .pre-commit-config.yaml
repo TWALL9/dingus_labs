@@ -43,7 +43,7 @@ repos:
         additional_dependencies: ["@cspell/dict-en-ca"]
   - repo: https://github.com/psf/black
     # Black version.
-    rev: 24.3.0
+    rev: 26.5.1
     hooks:
       # Run the formatter.
       - id: black
