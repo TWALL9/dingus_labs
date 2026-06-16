@@ -1,0 +1,82 @@
+Language: Cpp
+BasedOnStyle: LLVM
+
+# Indentation
+IndentWidth: 2
+ContinuationIndentWidth: 2
+TabWidth: 2
+UseTab: Never
+
+# Line length
+ColumnLimit: 100
+
+# Brace style (K&R)
+BreakBeforeBraces: Attach
+
+# Wrapping
+AlignAfterOpenBracket: DontAlign
+AlignOperands: DontAlign
+AlignEscapedNewlines: Left
+
+BinPackArguments: true
+BinPackParameters: true
+
+# Spaces
+SpaceBeforeParens: ControlStatements
+SpacesInParentheses: false
+SpacesInSquareBrackets: false
+SpaceBeforeAssignmentOperators: true
+
+# Pointers/references
+PointerAlignment: Right
+ReferenceAlignment: Right
+
+Cpp11BracedListStyle: true
+
+# Short statements
+AllowShortBlocksOnASingleLine: Empty
+AllowShortFunctionsOnASingleLine: Inline
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortLoopsOnASingleLine: false
+AllowShortCaseLabelsOnASingleLine: false
+
+# Switches
+IndentCaseLabels: true
+IndentCaseBlocks: true
+
+# Namespaces
+NamespaceIndentation: None
+CompactNamespaces: true
+
+# Includes
+SortIncludes: true
+IncludeBlocks: Preserve
+
+# Avoid column-based alignment (more rustfmt-like)
+AlignConsecutiveAssignments: None
+AlignConsecutiveDeclarations: None
+AlignConsecutiveMacros: None
+AlignTrailingComments: false
+
+# Templates and concepts
+AlwaysBreakTemplateDeclarations: MultiLine
+PenaltyBreakTemplateDeclaration: 0
+
+# Constructor/member initializer lists
+PackConstructorInitializers: NextLine
+BreakConstructorInitializers: BeforeComma
+
+# Empty lines
+KeepEmptyLinesAtTheStartOfBlocks: false
+MaxEmptyLinesToKeep: 1
+
+# Comments
+ReflowComments: true
+
+---
+Language: Proto
+DisableFormat: true
+
+---
+Language: Json
+DisableFormat: true
