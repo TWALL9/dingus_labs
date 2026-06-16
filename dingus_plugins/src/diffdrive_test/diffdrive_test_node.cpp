@@ -1,5 +1,5 @@
-#include "otomo_msgs/otomo.pb.h"
 #include "otomo_msgs/msg/diffdrive.hpp"
+#include "otomo_msgs/otomo.pb.h"
 
 #include "async_serial/kiss_tnc.hpp"
 #include "async_serial/serial_port.hpp"
@@ -8,13 +8,13 @@
 
 namespace dingus_plugins::diffdrive_test_node {
 
-bool encode_message(async_serial::KissOutputStream& out_kiss, otomo::TopMsg& msg) {
+bool encode_message(async_serial::KissOutputStream &out_kiss, otomo::TopMsg &msg) {
   std::string out_string;
   if (!msg.SerializeToString(&out_string)) {
     return false;
   }
 
-  const char* out_c = out_string.c_str();
+  const char *out_c = out_string.c_str();
   size_t len = out_string.size();
 
   for (uint8_t i = 0; i < len; i++) {
@@ -26,11 +26,12 @@ bool encode_message(async_serial::KissOutputStream& out_kiss, otomo::TopMsg& msg
 
 class DiffdriveTestNode : public rclcpp::Node {
 public:
-  DiffdriveTestNode() : Node("diff_drive_test_node"), logger_(rclcpp::get_logger("DiffdriveTestNode")) {
+  DiffdriveTestNode()
+      : Node("diff_drive_test_node"), logger_(rclcpp::get_logger("DiffdriveTestNode")) {
     pub_ = this->create_publisher<otomo_msgs::msg::Diffdrive>("robot_diff", 10);
     repub_ = this->create_publisher<otomo_msgs::msg::Diffdrive>("cmd_repub", 10);
-    sub_ = this->create_subscription<otomo_msgs::msg::Diffdrive>("cmd_robot_diff",
-      10, std::bind(&DiffdriveTestNode::cmd_callback, this, std::placeholders::_1));
+    sub_ = this->create_subscription<otomo_msgs::msg::Diffdrive>("cmd_robot_diff", 10,
+      std::bind(&DiffdriveTestNode::cmd_callback, this, std::placeholders::_1));
 
     serial_port_ = std::make_shared<async_serial::SerialPort>("/dev/ttyACM1", 115200);
 
@@ -39,15 +40,13 @@ public:
     }
 
     serial_port_->add_receive_callback(std::bind(
-      &DiffdriveTestNode::serial_callback, this, std::placeholders::_1, std::placeholders::_2
-    ));
+      &DiffdriveTestNode::serial_callback, this, std::placeholders::_1, std::placeholders::_2));
   }
 
 private:
-
   void cmd_callback(const otomo_msgs::msg::Diffdrive::SharedPtr msg) {
     otomo::TopMsg out_msg;
-    otomo::DiffDrive * diff_drive = new otomo::DiffDrive();
+    otomo::DiffDrive *diff_drive = new otomo::DiffDrive();
     diff_drive->set_left_motor(msg->left);
     diff_drive->set_right_motor(msg->right);
     out_msg.set_allocated_diff_drive(diff_drive);
@@ -67,11 +66,10 @@ private:
     repub_->publish(dd_msg);
   }
 
-  void serial_callback(const std::vector<uint8_t>& buf, size_t num_received) {
+  void serial_callback(const std::vector<uint8_t> &buf, size_t num_received) {
     for (size_t i = 0; i < num_received; i++) {
       int ret = recv_buf_.add_byte(buf[i]);
-      if (ret != 0)
-      {
+      if (ret != 0) {
         recv_buf_.init();
       } else if (recv_buf_.is_ready()) {
         uint8_t port;
@@ -79,9 +77,10 @@ private:
 
         otomo::TopMsg proto_msg;
         if (!proto_msg.ParseFromArray((const void *)&in_proto[0], in_proto.size())) {
-          RCLCPP_WARN(logger_, "Could not deserialize proto msg from mcu!, 0x%x, %ld", in_proto.front(), in_proto.size());
+          RCLCPP_WARN(logger_, "Could not deserialize proto msg from mcu!, 0x%x, %ld",
+            in_proto.front(), in_proto.size());
         } else if (proto_msg.has_state()) {
-          const auto& state = proto_msg.state();
+          const auto &state = proto_msg.state();
           auto dd_msg = otomo_msgs::msg::Diffdrive();
           dd_msg.header.stamp = this->get_clock()->now();
           dd_msg.left = state.left_motor().angular_velocity();
@@ -102,12 +101,11 @@ private:
   rclcpp::Subscription<otomo_msgs::msg::Diffdrive>::SharedPtr sub_;
   rclcpp::Publisher<otomo_msgs::msg::Diffdrive>::SharedPtr pub_;
   rclcpp::Publisher<otomo_msgs::msg::Diffdrive>::SharedPtr repub_;
-
 };
 
-}
+} // namespace dingus_plugins::diffdrive_test_node
 
-int main(int argc, char * argv[]) {
+int main(int argc, char *argv[]) {
   rclcpp::init(argc, argv);
   rclcpp::spin(std::make_shared<dingus_plugins::diffdrive_test_node::DiffdriveTestNode>());
   rclcpp::shutdown();

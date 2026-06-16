@@ -5,16 +5,16 @@
 namespace dingus_plugins::controllers {
 
 struct DiffdriveConfiguration {
-  std::string left_wheel_name_ { "left_wheel" };
-  std::string right_wheel_name_ { "right_wheel" };
+  std::string left_wheel_name_{"left_wheel"};
+  std::string right_wheel_name_{"right_wheel"};
 
-  std::string serial_name_ { "/dev/ttyUSB0" };
-  int baud_rate_ { 115200 };
+  std::string serial_name_{"/dev/ttyUSB0"};
+  int baud_rate_{115200};
 
-  int encoder_count_ { 1000 }; // ??? find in motor datasheet
-  
-  int timeout_ms_ { 1000 };
-  float loop_rate_ { 30.0 };
+  int encoder_count_{1000}; // ??? find in motor datasheet
+
+  int timeout_ms_{1000};
+  float loop_rate_{30.0};
 };
 
-}
+} // namespace dingus_plugins::controllers

@@ -12,68 +12,58 @@ from launch_ros.actions import Node
 
 
 def generate_launch_description():
-    pkg_name = 'dingus_control'
+    pkg_name = "dingus_control"
     pkg_share_dir = get_package_share_directory(pkg_name)
 
     robot_description = Command(
-        ['ros2 param get --hide-type /robot_state_publisher robot_description']
+        ["ros2 param get --hide-type /robot_state_publisher robot_description"]
     )
 
-    controller_params_file = os.path.join(
-        pkg_share_dir,
-        'config',
-        'controllers.yaml'
-    )
+    controller_params_file = os.path.join(pkg_share_dir, "config", "controllers.yaml")
 
     # To use debugging, build with
     # colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Debug
     controller_manager = Node(
         package="controller_manager",
         executable="ros2_control_node",
-        parameters=[{'robot_description': robot_description},
-                    controller_params_file],
+        parameters=[{"robot_description": robot_description}, controller_params_file],
         # prefix=['xterm -e gdb -ex run --args']  # or prefix=['gdbserver localhost:3000']
     )
 
-    delayed_controller_manager = TimerAction(
-        period=3.0,
-        actions=[controller_manager]
-    )
+    delayed_controller_manager = TimerAction(period=3.0, actions=[controller_manager])
 
     diff_drive_spawner = Node(
-        package='controller_manager',
-        executable='spawner',
-        arguments=['diff_controller'],
+        package="controller_manager",
+        executable="spawner",
+        arguments=["diff_controller"],
     )
 
     pid_spawner = Node(
-        package='controller_manager',
-        executable='spawner',
-        arguments=['pid_controller']
+        package="controller_manager", executable="spawner", arguments=["pid_controller"]
     )
 
     joint_broad_spawner = Node(
-        package='controller_manager',
-        executable='spawner',
-        arguments=['joint_broad'],
+        package="controller_manager",
+        executable="spawner",
+        arguments=["joint_broad"],
     )
 
     imu_broad_spawner = Node(
-        package='controller_manager',
-        executable='spawner',
-        arguments=['imu_broadcaster'],
+        package="controller_manager",
+        executable="spawner",
+        arguments=["imu_broadcaster"],
     )
 
     left_wheel_broad_spawner = Node(
-        package='controller_manager',
-        executable='spawner',
-        arguments=['l_motor_broadcaster'],
+        package="controller_manager",
+        executable="spawner",
+        arguments=["l_motor_broadcaster"],
     )
 
     right_wheel_broad_spawner = Node(
-        package='controller_manager',
-        executable='spawner',
-        arguments=['r_motor_broadcaster'],
+        package="controller_manager",
+        executable="spawner",
+        arguments=["r_motor_broadcaster"],
     )
 
     delayed_diff_drive_spawner = RegisterEventHandler(
@@ -119,12 +109,14 @@ def generate_launch_description():
     )
 
     # Launch them all!
-    return LaunchDescription([
-        delayed_controller_manager,
-        delayed_diff_drive_spawner,
-        delayed_pid_spawner,
-        delayed_joint_broad_spawner,
-        delayed_imu_broad_spawner,
-        delayed_left_wheel_broad_spawner,
-        delayed_right_wheel_broad_spawner,
-    ])
+    return LaunchDescription(
+        [
+            delayed_controller_manager,
+            delayed_diff_drive_spawner,
+            delayed_pid_spawner,
+            delayed_joint_broad_spawner,
+            delayed_imu_broad_spawner,
+            delayed_left_wheel_broad_spawner,
+            delayed_right_wheel_broad_spawner,
+        ]
+    )

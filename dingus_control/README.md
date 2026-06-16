@@ -33,7 +33,7 @@ ros2 launch dingus_core rplidar.launch.py
 
 2. launch rviz using the nav2 config
 ```bash
-ros2 run rviz2 rviz2 -d $(ros2 pkg prefix nav2_bringup)/share/nav2_bringup/rviz/nav2_default_view.rviz                                                                                                     
+ros2 run rviz2 rviz2 -d $(ros2 pkg prefix nav2_bringup)/share/nav2_bringup/rviz/nav2_default_view.rviz
 ```
 
 3. launch nav2_bringup

@@ -2,9 +2,9 @@
 #define DINGUS_PLUGINS__DINGUS_CONTROLLER_HPP_
 
 #include <chrono>
+#include <map>
 #include <string>
 #include <vector>
-#include <map>
 
 #include "rclcpp/rclcpp.hpp"
 
@@ -27,12 +27,12 @@ public:
 
   interface_return command_interface_configuration() const override;
   interface_return state_interface_configuration() const override;
-  ci_return update(const rclcpp::Time& time, const rclcpp::Duration& period) override;
+  ci_return update(const rclcpp::Time &time, const rclcpp::Duration &period) override;
 
   cb_return on_init() override;
-  cb_return on_configure(const rclcpp_lifecycle::State& previous_state) override;
-  cb_return on_activate(const rclcpp_lifecycle::State& previous_state) override;
-  cb_return on_deactivate(const rclcpp_lifecycle::State& previous_state) override;
+  cb_return on_configure(const rclcpp_lifecycle::State &previous_state) override;
+  cb_return on_activate(const rclcpp_lifecycle::State &previous_state) override;
+  cb_return on_deactivate(const rclcpp_lifecycle::State &previous_state) override;
 
 protected:
   void pid_update_cb(const otomo_msgs::msg::Pid::SharedPtr msg);
@@ -46,11 +46,11 @@ protected:
   };
   std::map<std::string, PidHandle> registered_pid_handles_;
 
-  bool is_halted_ {false};
+  bool is_halted_{false};
 
   rclcpp::Subscription<otomo_msgs::msg::Pid>::SharedPtr pid_subs_;
 };
 
-}
+} // namespace dingus_plugins::controllers
 
 #endif // DINGUS_PLUGINS__DINGUS_CONTROLLER_HPP_

@@ -4,12 +4,12 @@
 #include <memory>
 #include <string>
 
-#include <rclcpp/rclcpp.hpp>
 #include "controller_interface/controller_interface.hpp"
+#include <rclcpp/rclcpp.hpp>
 
-#include "realtime_tools/realtime_publisher.hpp"
 #include "dingus_plugins/wheel_sensor.hpp"
 #include "otomo_msgs/msg/wheel.hpp"
+#include "realtime_tools/realtime_publisher.hpp"
 
 namespace dingus_plugins::controllers {
 
@@ -24,12 +24,12 @@ public:
 
   interface_return command_interface_configuration() const override;
   interface_return state_interface_configuration() const override;
-  ci_return update(const rclcpp::Time& time, const rclcpp::Duration& period) override;
+  ci_return update(const rclcpp::Time &time, const rclcpp::Duration &period) override;
 
   cb_return on_init() override;
-  cb_return on_configure(const rclcpp_lifecycle::State& previous_state) override;
-  cb_return on_activate(const rclcpp_lifecycle::State& previous_state) override;
-  cb_return on_deactivate(const rclcpp_lifecycle::State& previous_state) override;
+  cb_return on_configure(const rclcpp_lifecycle::State &previous_state) override;
+  cb_return on_activate(const rclcpp_lifecycle::State &previous_state) override;
+  cb_return on_deactivate(const rclcpp_lifecycle::State &previous_state) override;
 
 protected:
   using RtWheelPub = realtime_tools::RealtimePublisher<otomo_msgs::msg::Wheel>;

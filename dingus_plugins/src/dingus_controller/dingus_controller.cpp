@@ -33,11 +33,9 @@ cb_return DingusController::on_init() {
     auto_declare<double>("pid_default_d_term", 0.0);
 
     auto_declare<std::vector<std::string>>("pid_controllers", {});
-  } catch (const std::exception& e) {
-    RCLCPP_ERROR(get_node()->get_logger(),
-      "Exception during dingus_controller init stage: %s",
-      e.what()
-    );
+  } catch (const std::exception &e) {
+    RCLCPP_ERROR(
+      get_node()->get_logger(), "Exception during dingus_controller init stage: %s", e.what());
     return cb_return::ERROR;
   }
 
@@ -45,7 +43,8 @@ cb_return DingusController::on_init() {
 }
 
 interface_return DingusController::command_interface_configuration() const {
-  controller_interface::InterfaceConfiguration conf = { controller_interface::interface_configuration_type::INDIVIDUAL, {} };
+  controller_interface::InterfaceConfiguration conf = {
+    controller_interface::interface_configuration_type::INDIVIDUAL, {}};
 
   if (pid_controllers_.empty()) {
     RCLCPP_WARN(get_node()->get_logger(), "command interface empty controller map");
@@ -53,7 +52,7 @@ interface_return DingusController::command_interface_configuration() const {
 
   conf.names.reserve(pid_controllers_.size() * 3);
 
-  for (const auto& pid_name : pid_controllers_) {
+  for (const auto &pid_name : pid_controllers_) {
     conf.names.push_back(pid_name.first + "/" + HW_IF_PROPORTIONAL);
     conf.names.push_back(pid_name.first + "/" + HW_IF_INTEGRAL);
     conf.names.push_back(pid_name.first + "/" + HW_IF_DERIVATIVE);
@@ -63,10 +62,10 @@ interface_return DingusController::command_interface_configuration() const {
 }
 
 interface_return DingusController::state_interface_configuration() const {
-  return { controller_interface::interface_configuration_type::NONE, {} };
+  return {controller_interface::interface_configuration_type::NONE, {}};
 }
 
-cb_return DingusController::on_configure(const rclcpp_lifecycle::State&) {
+cb_return DingusController::on_configure(const rclcpp_lifecycle::State &) {
   auto logger = get_node()->get_logger();
 
   std::vector<std::string> controller_names;
@@ -83,33 +82,32 @@ cb_return DingusController::on_configure(const rclcpp_lifecycle::State&) {
     return cb_return::ERROR;
   }
 
-  for (const auto& name : controller_names) {
+  for (const auto &name : controller_names) {
     RCLCPP_ERROR(logger, "finding params for %s", name.c_str());
     if (pid_controllers_.find(name) == pid_controllers_.end()) {
-      PidParams param { default_p, default_i, default_d, false };
+      PidParams param{default_p, default_i, default_d, false};
       // auto fn std::bind(&DingusController::pid_update_cb, this, _1);
-      pid_controllers_.insert({ name, param });
+      pid_controllers_.insert({name, param});
     }
   }
 
   // todo create vec of subs for individual pid controllers
-  pid_subs_ = get_node()->create_subscription<otomo_msgs::msg::Pid>(
-    "/dingus_controller/set_pid/default",
-    rclcpp::SystemDefaultsQoS(),
-    [this](const std::shared_ptr<otomo_msgs::msg::Pid> pid) -> void {
-      RCLCPP_WARN(get_node()->get_logger(), "Received PID update for default");
-      PidParams new_pid;
-      new_pid.p = pid->p;
-      new_pid.i = pid->i;
-      new_pid.d = pid->d;
-      new_pid.update_pid = true;
-      pid_controllers_.at("default") = new_pid;
-    });
+  pid_subs_ =
+    get_node()->create_subscription<otomo_msgs::msg::Pid>("/dingus_controller/set_pid/default",
+      rclcpp::SystemDefaultsQoS(), [this](const std::shared_ptr<otomo_msgs::msg::Pid> pid) -> void {
+        RCLCPP_WARN(get_node()->get_logger(), "Received PID update for default");
+        PidParams new_pid;
+        new_pid.p = pid->p;
+        new_pid.i = pid->i;
+        new_pid.d = pid->d;
+        new_pid.update_pid = true;
+        pid_controllers_.at("default") = new_pid;
+      });
 
   return cb_return::SUCCESS;
 }
 
-cb_return DingusController::on_activate(const rclcpp_lifecycle::State&) {
+cb_return DingusController::on_activate(const rclcpp_lifecycle::State &) {
   auto logger = get_node()->get_logger();
 
   registered_pid_handles_.clear();
@@ -118,54 +116,47 @@ cb_return DingusController::on_activate(const rclcpp_lifecycle::State&) {
     RCLCPP_ERROR(logger, "no controllers are present");
     return cb_return::ERROR;
   } else {
-    for (const auto& ctrl : pid_controllers_) {
+    for (const auto &ctrl : pid_controllers_) {
       const auto controller_name = ctrl.first;
-      const auto command_handle_p = std::find_if(
-        command_interfaces_.begin(), command_interfaces_.end(),
-        [&controller_name, &logger](const auto& interface) {
+      const auto command_handle_p = std::find_if(command_interfaces_.begin(),
+        command_interfaces_.end(), [&controller_name, &logger](const auto &interface) {
           auto interface_name = find_by_split(interface.get_name(), "/").front();
           return interface_name == controller_name &&
             interface.get_interface_name() == HW_IF_PROPORTIONAL;
-        }
-      );
+        });
 
       if (command_handle_p == command_interfaces_.end()) {
         RCLCPP_ERROR(logger, "Unable to obtain command handle P for %s", controller_name.c_str());
         return cb_return::ERROR;
       }
 
-      const auto command_handle_i = std::find_if(
-        command_interfaces_.begin(), command_interfaces_.end(),
-        [&controller_name](const auto& interface) {
+      const auto command_handle_i = std::find_if(command_interfaces_.begin(),
+        command_interfaces_.end(), [&controller_name](const auto &interface) {
           auto interface_name = find_by_split(interface.get_name(), "/").front();
           return interface_name == controller_name &&
             interface.get_interface_name() == HW_IF_INTEGRAL;
-        }
-      );
+        });
 
       if (command_handle_i == command_interfaces_.end()) {
         RCLCPP_ERROR(logger, "Unable to obtain command handle I for %s", controller_name.c_str());
         return cb_return::ERROR;
       }
 
-      const auto command_handle_d = std::find_if(
-        command_interfaces_.begin(), command_interfaces_.end(),
-        [&controller_name](const auto& interface) {
+      const auto command_handle_d = std::find_if(command_interfaces_.begin(),
+        command_interfaces_.end(), [&controller_name](const auto &interface) {
           auto interface_name = find_by_split(interface.get_name(), "/").front();
           return interface_name == controller_name &&
             interface.get_interface_name() == HW_IF_DERIVATIVE;
-        }
-      );
+        });
 
       if (command_handle_d == command_interfaces_.end()) {
         RCLCPP_ERROR(logger, "Unable to obtain command handle D for %s", controller_name.c_str());
         return cb_return::ERROR;
       }
 
-      registered_pid_handles_.insert({ controller_name,
+      registered_pid_handles_.insert({controller_name,
         PidHandle{
-          std::ref(*command_handle_p), std::ref(*command_handle_i), std::ref(*command_handle_d)
-        }});
+          std::ref(*command_handle_p), std::ref(*command_handle_i), std::ref(*command_handle_d)}});
     }
 
     RCLCPP_DEBUG(logger, "Starting PID controllers");
@@ -174,14 +165,14 @@ cb_return DingusController::on_activate(const rclcpp_lifecycle::State&) {
   }
 }
 
-cb_return DingusController::on_deactivate(const rclcpp_lifecycle::State&) {
+cb_return DingusController::on_deactivate(const rclcpp_lifecycle::State &) {
   pid_controllers_.clear();
   is_halted_ = true;
 
   return cb_return::SUCCESS;
 }
 
-ci_return DingusController::update(const rclcpp::Time&, const rclcpp::Duration&) {
+ci_return DingusController::update(const rclcpp::Time &, const rclcpp::Duration &) {
   auto logger = get_node()->get_logger();
 
   bool inactive = get_lifecycle_state().id() == lifecycle_msgs::msg::State::PRIMARY_STATE_INACTIVE;
@@ -195,10 +186,11 @@ ci_return DingusController::update(const rclcpp::Time&, const rclcpp::Duration&)
 
   for (auto &ctrl : pid_controllers_) {
     auto name = ctrl.first;
-    auto& pid = ctrl.second;
+    auto &pid = ctrl.second;
     if (pid.update_pid) {
       pid.update_pid = false;
-      RCLCPP_INFO_STREAM(logger, "Updating " << name << " PID params: p: " << pid.p << ", i: " << pid.i << ", d: " << pid.d);
+      RCLCPP_INFO_STREAM(logger,
+        "Updating " << name << " PID params: p: " << pid.p << ", i: " << pid.i << ", d: " << pid.d);
       auto handle = registered_pid_handles_.at(name);
       (void)handle.p.get().set_value(pid.p);
       (void)handle.i.get().set_value(pid.i);
@@ -208,8 +200,6 @@ ci_return DingusController::update(const rclcpp::Time&, const rclcpp::Duration&)
 
   return ci_return::OK;
 }
-
-
 
 } // namespace dingus_plugins::controllers
 
