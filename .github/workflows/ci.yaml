@@ -63,17 +63,31 @@ jobs:
         with:
           submodules: recursive
 
+      # - name: Clone non-rosdep dependencies
+      #   run: |
+      #     git clone https://github.com/TWALL9/async_serial.git
+
+      - name: Setup ROS env
+        uses: ros-tooling/setup-ros@v0.7
+        with:
+          required-ros-distributions: jazzy
+
       - name: Build workspace
-        run: |
-          cd /tmp
-          mkdir -p dingus_ws/src
-          cd dingus_ws/src
-          ln -s $GITHUB_WORKSPACE dingus_labs
-          git clone https://github.com/TWALL9/async_serial.git
-          cd /tmp/dingus_ws
-          . /opt/ros/jazzy/setup.sh && rosdep update
-          . /opt/ros/jazzy/setup.sh && rosdep install --rosdistro jazzy --from-paths src --ignore-src --dependency-types build -y
-          . /opt/ros/jazzy/setup.sh && colcon build --symlink-install
+        uses: ros-tooling/action-ros-ci@v0.4
+        with:
+          target-ros2-distro: jazzy
+
+      # - name: Build workspace
+      #   run: |
+      #     cd /tmp
+      #     mkdir -p dingus_ws/src
+      #     cd dingus_ws/src
+      #     ln -s $GITHUB_WORKSPACE dingus_labs
+      #     git clone https://github.com/TWALL9/async_serial.git
+      #     cd /tmp/dingus_ws
+      #     . /opt/ros/jazzy/setup.sh && rosdep update
+      #     . /opt/ros/jazzy/setup.sh && rosdep install --rosdistro jazzy --from-paths src --ignore-src --dependency-types build -y
+      #     . /opt/ros/jazzy/setup.sh && colcon build --symlink-install
 
   build-and-push:
     if: startsWith(github.ref, 'refs/tags/')
