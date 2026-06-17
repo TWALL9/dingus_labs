@@ -72,6 +72,7 @@ jobs:
           git clone https://github.com/TWALL9/async_serial.git
           cd ..
           . /opt/ros/jazzy/setup.sh
+          rosdep update
           rosdep install --from-paths src --ignore-src -y
           colcon build --symlink-install
 
