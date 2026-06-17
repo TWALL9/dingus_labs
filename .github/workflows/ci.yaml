@@ -67,28 +67,10 @@ jobs:
         uses: ros-tooling/action-ros-ci@v0.4
         with:
           target-ros2-distro: jazzy
-        # package-name: |
-          #   otomo_msgs
-          #   dingus_control
-          #   dingus_core
-          #   dingus_plugins
-          #   dingus_sim
           vcs-repo-file-url: dependencies.repos
 
-      # - name: Build workspace
-      #   run: |
-      #     cd /tmp
-      #     mkdir -p dingus_ws/src
-      #     cd dingus_ws/src
-      #     ln -s $GITHUB_WORKSPACE dingus_labs
-      #     git clone https://github.com/TWALL9/async_serial.git
-      #     cd /tmp/dingus_ws
-      #     . /opt/ros/jazzy/setup.sh && rosdep update
-      #     . /opt/ros/jazzy/setup.sh && rosdep install --rosdistro jazzy --from-paths src --ignore-src --dependency-types build -y
-      #     . /opt/ros/jazzy/setup.sh && colcon build --symlink-install
-
   build-and-push:
-    if: startsWith(github.ref, 'refs/tags/')
+    # if: startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
     permissions:
       contents: read
