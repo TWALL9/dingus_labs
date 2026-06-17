@@ -72,7 +72,7 @@ jobs:
           git clone https://github.com/TWALL9/async_serial.git
           cd /tmp/dingus_ws
           . /opt/ros/jazzy/setup.sh && rosdep update
-          . /opt/ros/jazzy/setup.sh && rosdep install --rosdistro jazzy --from-paths src --ignore-src --dependency-types build exec -y
+          . /opt/ros/jazzy/setup.sh && rosdep install --rosdistro jazzy --from-paths src --ignore-src --dependency-types build -y
           . /opt/ros/jazzy/setup.sh && colcon build --symlink-install
 
   build-and-push:
