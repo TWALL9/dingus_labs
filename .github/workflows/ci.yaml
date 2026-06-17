@@ -52,6 +52,7 @@ jobs:
           pre-commit run --all-files
 
   build-and-push:
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -89,7 +90,6 @@ jobs:
 
       - name: Build and push base image
         uses: docker/build-push-action@v5
-        if: github.event_name != 'pull_request'
         with:
           context: ./docker
           file: ./docker/Dockerfile.base
@@ -101,7 +101,6 @@ jobs:
           cache-to: type=gha,mode=max
 
       - name: Build and push production image
-        if: github.event_name != 'pull_request'
         uses: docker/build-push-action@v5
         with:
           context: ./docker
