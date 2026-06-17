@@ -55,7 +55,7 @@ jobs:
     runs-on: ubuntu-latest
 
     container:
-      image: osrf/ros:jazzy-desktop-noble
+      image: rostooling/setup-ros-docker:ubuntu-noble-latest
 
     steps:
       - name: Checkout code
@@ -68,14 +68,17 @@ jobs:
         with:
           required-ros-distributions: jazzy
 
-      - name: Import repositories
-        run: |
-          vcs import src < dependencies.repos
-
       - name: Build workspace
         uses: ros-tooling/action-ros-ci@v0.4
         with:
           target-ros2-distro: jazzy
+        # package-name: |
+          #   otomo_msgs
+          #   dingus_control
+          #   dingus_core
+          #   dingus_plugins
+          #   dingus_sim
+          vcs-repo-file-url: dependencies.repos
 
       # - name: Build workspace
       #   run: |
