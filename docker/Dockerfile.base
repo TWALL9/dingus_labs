@@ -1,5 +1,4 @@
 # Base Docker image for Dingus ROS2 packages
-# Targets ARM64 (Raspberry Pi 4/5) and compatible hardware
 # Hardware-only (no Gazebo simulation)
 # Contains all dependencies and tools; subclasses add specific build steps
 

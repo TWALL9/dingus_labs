@@ -8,7 +8,6 @@ FROM ghcr.io/twall9/dingus_labs:base
 WORKDIR /dingus_ws/src
 RUN git clone https://github.com/TWALL9/dingus_labs.git --recurse-submodules
 RUN git clone https://github.com/TWALL9/async_serial.git
-RUN git clone https://github.com/ros-teleop/twist_mux.git
 
 # Build ROS workspace
 WORKDIR /dingus_ws
