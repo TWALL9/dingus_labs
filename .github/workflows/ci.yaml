@@ -63,14 +63,14 @@ jobs:
         with:
           submodules: recursive
 
-      # - name: Clone non-rosdep dependencies
-      #   run: |
-      #     git clone https://github.com/TWALL9/async_serial.git
-
       - name: Setup ROS env
         uses: ros-tooling/setup-ros@v0.7
         with:
           required-ros-distributions: jazzy
+
+      - name: Import repositories
+        run: |
+          vcs import src < dependencies.repos
 
       - name: Build workspace
         uses: ros-tooling/action-ros-ci@v0.4

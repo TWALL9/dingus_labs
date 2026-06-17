@@ -1,0 +1,5 @@
+repositories:
+  async_serial:
+    type: git
+    url: https://github.com/TWALL9/async_serial.git
+    version: main
