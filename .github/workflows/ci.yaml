@@ -55,7 +55,7 @@ jobs:
     runs-on: ubuntu-latest
 
     container:
-      image: ros:jazzy-ros-base-noble
+      image: osrf/ros:jazzy-desktop-noble
 
     steps:
       - name: Checkout code
@@ -70,12 +70,10 @@ jobs:
           cd dingus_ws/src
           ln -s $GITHUB_WORKSPACE dingus_labs
           git clone https://github.com/TWALL9/async_serial.git
-          cd ..
-          . /opt/ros/jazzy/setup.sh
-          rosdep update
-          rosdep install --from-paths src --ignore-src -y
-          colcon build --symlink-install
-
+          cd /tmp/dingus_ws
+          . /opt/ros/jazzy/setup.sh && rosdep update
+          . /opt/ros/jazzy/setup.sh && rosdep install --rosdistro jazzy --from-paths src --ignore-src --dependency-types build exec -y
+          . /opt/ros/jazzy/setup.sh && colcon build --symlink-install
 
   build-and-push:
     if: startsWith(github.ref, 'refs/tags/')

@@ -11,7 +11,8 @@ RUN git clone https://github.com/TWALL9/async_serial.git
 
 # Build ROS workspace
 WORKDIR /dingus_ws
-RUN . /opt/ros/jazzy/setup.sh && rosdep install --from-paths src --ignore-src -y
+RUN . /opt/ros/jazzy/setup.sh && rosdep update
+RUN . /opt/ros/jazzy/setup.sh && rosdep install --rosdistro jazzy --from-paths src --ignore-src --dependency-types build exec -y
 RUN . /opt/ros/jazzy/setup.sh && colcon build --symlink-install
 
 # Source workspace setup in bashrc

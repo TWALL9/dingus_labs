@@ -2,7 +2,7 @@
 # Hardware-only (no Gazebo simulation)
 # Contains all dependencies and tools; subclasses add specific build steps
 
-FROM ros:jazzy
+FROM osrf/ros:jazzy-desktop-noble
 
 # Install system dependencies and development tools
 RUN apt-get update && apt-get install -y \
